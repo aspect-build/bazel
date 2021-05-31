@@ -55,7 +55,7 @@ public final class OutputsInvalidationIntegrationTest extends BuildIntegrationTe
       throws BuildFailedException, AbruptExitException, InterruptedException, IOException {
     when(outputService.actionFileSystemType()).thenReturn(ActionFileSystemType.DISABLED);
     when(outputService.getFilesSystemName()).thenReturn("fileSystemName");
-    when(outputService.startBuild(any(), any(), anyBoolean()))
+    when(outputService.startBuild(any(), any(), any(), any(), anyBoolean()))
         .thenReturn(ModifiedFileSet.EVERYTHING_MODIFIED);
   }
 
@@ -86,7 +86,7 @@ public final class OutputsInvalidationIntegrationTest extends BuildIntegrationTe
       delete(getOnlyOutput("//foo"));
     }
 
-    when(outputService.startBuild(any(), any(), anyBoolean()))
+    when(outputService.startBuild(any(), any(), any(), any(), anyBoolean()))
         .thenReturn(ModifiedFileSet.NOTHING_MODIFIED);
     events.collector().clear();
     buildTarget("//foo");
@@ -124,7 +124,7 @@ public final class OutputsInvalidationIntegrationTest extends BuildIntegrationTe
     buildTarget("//foo");
     MoreAsserts.assertContainsEvent(events.collector(), "Executing genrule //foo:foo");
 
-    when(outputService.startBuild(any(), any(), anyBoolean()))
+    when(outputService.startBuild(any(), any(), any(), any(), anyBoolean()))
         .thenReturn(modification.modifiedFileSet(getOnlyOutput("//foo")));
     events.collector().clear();
     buildTarget("//foo");
@@ -140,7 +140,7 @@ public final class OutputsInvalidationIntegrationTest extends BuildIntegrationTe
     buildTarget("//foo");
     MoreAsserts.assertContainsEvent(events.collector(), "Executing genrule //foo:foo");
 
-    when(outputService.startBuild(any(), any(), anyBoolean()))
+    when(outputService.startBuild(any(), any(), any(), any(), anyBoolean()))
         .thenReturn(modification.modifiedFileSet(getOnlyOutput("//foo")));
     events.collector().clear();
     buildTarget("//foo");
@@ -162,7 +162,7 @@ public final class OutputsInvalidationIntegrationTest extends BuildIntegrationTe
     MoreAsserts.assertContainsEvent(events.collector(), "Executing genrule //foo:foo");
     delete(getOnlyOutput("//foo"));
 
-    when(outputService.startBuild(any(), any(), anyBoolean()))
+    when(outputService.startBuild(any(), any(), any(), any(), anyBoolean()))
         .thenReturn(
             everythingDeleted
                 ? ModifiedFileSet.EVERYTHING_DELETED
@@ -185,7 +185,7 @@ public final class OutputsInvalidationIntegrationTest extends BuildIntegrationTe
     Artifact fooOut = getOnlyOutput("//foo");
     delete(fooOut);
 
-    when(outputService.startBuild(any(), any(), anyBoolean())).thenReturn(modifiedFileSet(fooOut));
+    when(outputService.startBuild(any(), any(), any(), any(), anyBoolean())).thenReturn(modifiedFileSet(fooOut));
     events.collector().clear();
     buildTarget("//foo:all");
 
