@@ -114,7 +114,9 @@ public interface OutputService {
    * @throws BuildFailedException if build preparation failed
    * @throws InterruptedException
    */
-  ModifiedFileSet startBuild(EventHandler eventHandler, UUID buildId, boolean finalizeActions)
+  ModifiedFileSet startBuild(
+      Path execRoot, String relativeOutputPath,
+      EventHandler eventHandler, UUID buildId, boolean finalizeActions)
       throws BuildFailedException, AbruptExitException, InterruptedException;
 
   /** Flush and wait for in-progress downloads. */
