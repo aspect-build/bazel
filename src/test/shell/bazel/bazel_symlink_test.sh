@@ -361,7 +361,7 @@ def _a_impl(ctx):
     return DefaultInfo(files = depset([output]))
 
 a = rule(
-    implementation = _a_impl, 
+    implementation = _a_impl,
     attrs = {
         "link_target": attr.string(),
         "_make_symlink": attr.label(
