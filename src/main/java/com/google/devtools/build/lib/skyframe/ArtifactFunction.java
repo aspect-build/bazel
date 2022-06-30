@@ -307,6 +307,7 @@ public final class ArtifactFunction implements SkyFunction {
             PackageBoundaryMode.CROSS,
             /*strictOutputFiles=*/ true,
             /*skipTestingForSubpackage=*/ true,
+            /*emitDirectoryNodes=*/ true,
             /*errorInfo=*/ "Directory artifact " + artifact.prettyPrint());
     RecursiveFilesystemTraversalValue value;
     try {
