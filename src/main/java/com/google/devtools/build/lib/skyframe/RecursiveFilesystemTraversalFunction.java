@@ -611,6 +611,9 @@ public final class RecursiveFilesystemTraversalFunction implements SkyFunction {
       paths = NestedSetBuilder.<ResolvedFile>stableOrder().addTransitive(children).add(root);
     } else {
       root = ResolvedFileFactory.directory(rootInfo.realPath);
+      if (traversal.emitDirectoryNodes) {
+        paths.add(root);
+      }
     }
     return RecursiveFilesystemTraversalValue.of(root, paths.build());
   }

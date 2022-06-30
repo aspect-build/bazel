@@ -431,4 +431,45 @@ EOF
 
   true  # reset the last exit code so the test won't be considered failed
 }
+
+function test_track_directory_changes() {
+  mkdir -p pkg/dir1/dir2
+  cat <<'EOF' > pkg/BUILD
+genrule(
+    name = "a",
+    srcs = ["dir1"],
+    outs = ["out"],
+    cmd = "touch $@",
+)
+EOF
+
+  assert_rebuilds_once() {
+    bazel --host_jvm_args=-DBAZEL_TRACK_SOURCE_DIRECTORIES=1 build //pkg:a \
+        >& "$TEST_log" || fail "Expected success"
+    expect_log "2 total actions"
+    bazel --host_jvm_args=-DBAZEL_TRACK_SOURCE_DIRECTORIES=1 build //pkg:a \
+        >& "$TEST_log" || fail "Expected success"
+    expect_log "1 total action"
+  }
+
+  assert_rebuilds_once
+
+  # Create an empty file in a nested subdirectory.
+  touch pkg/dir1/dir2/file
+  assert_rebuilds_once
+
+  # Change the content of the file.
+  echo "changed" > pkg/dir1/dir2/file
+  assert_rebuilds_once
+
+  # Create an empty directory in a nested subdirectory.
+  mkdir pkg/dir1/dir2/entry
+  assert_rebuilds_once
+
+  # Replace the directory with an empty file.
+  rmdir pkg/dir1/dir2/entry
+  touch pkg/dir1/dir2/entry
+  assert_rebuilds_once
+}
+
 run_suite "Integration tests of ${PRODUCT_NAME} using the execution phase."
