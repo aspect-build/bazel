@@ -165,7 +165,7 @@ class DirectoryTreeBuilder {
                   path);
               Path inputPath = ActionInputHelper.toInputPath(input, execRoot);
               boolean childAdded = currDir.addChild(new SymlinkNode(path.getBaseName(),
-                  inputPath.readSymbolicLink().getPathString()));
+                  inputPath.readSymbolicLink()));
               return childAdded ? 1 : 0;
             }
 
