@@ -3001,8 +3001,7 @@ EOF
     --spawn_strategy=remote \
     --remote_executor=grpc://localhost:${worker_port} \
     //pkg:b &>$TEST_log || fail "expected build to succeed"
-  # Using regex because the symlink is always absolute. https://github.com/bazelbuild/bazel/issues/14224
-  [[ $(cat bazel-bin/pkg/b.txt) =~ .*/non/existent ]] || fail "expected symlink target to be non/existent"
+  [[ $(cat bazel-bin/pkg/b.txt) == non/existent ]] || fail "expected symlink target to be non/existent"
 
   bazel clean --expunge
   bazel \
@@ -3013,8 +3012,7 @@ EOF
     --remote_executor=grpc://localhost:${worker_port} \
     --experimental_remote_merkle_tree_cache \
     //pkg:b &>$TEST_log || fail "expected build to succeed with Merkle tree cache"
-  # Using regex because the symlink is always absolute. https://github.com/bazelbuild/bazel/issues/14224
-  [[ $(cat bazel-bin/pkg/b.txt) =~ .*/non/existent ]] || fail "expected symlink target to be non/existent"
+  [[ $(cat bazel-bin/pkg/b.txt) == non/existent ]] || fail "expected symlink target to be non/existent"
 }
 
 run_suite "Remote execution and remote cache tests"
