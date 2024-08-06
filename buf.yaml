@@ -1,0 +1,11 @@
+version: v2
+modules:
+  - path: .
+    name: buf.build/bazel/bazel
+    excludes:
+      - src/java_tools
+      - src/tools/android
+      - third_party
+deps:
+  - buf.build/googleapis/googleapis
+  - buf.build/bazel/remote-apis
