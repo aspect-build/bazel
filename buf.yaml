@@ -1,11 +1,9 @@
+# To push to buf registry:
+# buf push --source-control-url=https://github.com/bazelbuild/bazel/tree/7.2.1
 version: v2
 modules:
-  - path: .
+  - path: src/proto
     name: buf.build/bazel/bazel
-    excludes:
-      - src/java_tools
-      - src/tools/android
-      - third_party
 deps:
   - buf.build/googleapis/googleapis
   - buf.build/bazel/remote-apis
